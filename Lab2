@@ -1,0 +1,54 @@
+2.	Implement a Java program to find the values of s and t for the given linear equation ax+by=gcd(a,b) using Extended Eucledian Algorithm.
+
+import java.util.Scanner;
+
+public class abc {
+
+    // Function to find GCD and coefficients s, t
+    static int gcd(int a, int b, int[] st) {
+
+        int r1 = a, r2 = b;
+        int s1 = 1, s2 = 0;
+        int t1 = 0, t2 = 1;
+
+        while (r2 > 0) {
+            int q = r1 / r2;
+
+            int r = r1 - q * r2;
+            r1 = r2;
+            r2 = r;
+
+            int s = s1 - q * s2;
+            s1 = s2;
+            s2 = s;
+
+            int t = t1 - q * t2;
+            t1 = t2;
+            t2 = t;
+        }
+
+        st[0] = s1; // s value
+        st[1] = t1; // t value
+
+        return r1; // GCD
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter value of a: ");
+        int a = sc.nextInt();
+
+        System.out.print("Enter value of b: ");
+        int b = sc.nextInt();
+
+        int[] st = new int[2]; // to store s and t
+
+        int gcd = gcd(a, b, st);
+
+        System.out.println("GCD(" + a + ", " + b + ") = " + gcd);
+        System.out.println("s = " + st[0] + ", t = " + st[1]);
+
+        sc.close();
+    }
+}
