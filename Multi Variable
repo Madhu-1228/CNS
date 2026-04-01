@@ -1,0 +1,75 @@
+import java.util.*;
+
+public class MIS {
+
+    static int inv(int a, int m) {
+        for (int i = 1; i < m; i++)
+            if ((a * i) % m == 1) return i;
+        return -1;
+    }
+
+    static int det(int[][] A, int m) {
+        int d = A[0][0]*(A[1][1]*A[2][2]-A[1][2]*A[2][1])
+              - A[0][1]*(A[1][0]*A[2][2]-A[1][2]*A[2][0])
+              + A[0][2]*(A[1][0]*A[2][1]-A[1][1]*A[2][0]);
+        return (d % m + m) % m;
+    }
+
+    static int[][] adj(int[][] A, int m) {
+        int[][] B = new int[3][3];
+        B[0][0]=A[1][1]*A[2][2]-A[1][2]*A[2][1];
+        B[0][1]=A[0][2]*A[2][1]-A[0][1]*A[2][2];
+        B[0][2]=A[0][1]*A[1][2]-A[0][2]*A[1][1];
+        B[1][0]=A[1][2]*A[2][0]-A[1][0]*A[2][2];
+        B[1][1]=A[0][0]*A[2][2]-A[0][2]*A[2][0];
+        B[1][2]=A[0][2]*A[1][0]-A[0][0]*A[1][2];
+        B[2][0]=A[1][0]*A[2][1]-A[1][1]*A[2][0];
+        B[2][1]=A[0][1]*A[2][0]-A[0][0]*A[2][1];
+        B[2][2]=A[0][0]*A[1][1]-A[0][1]*A[1][0];
+
+        for (int i=0;i<3;i++)
+            for (int j=0;j<3;j++)
+                B[i][j] = (B[i][j] % m + m) % m;
+        return B;
+    }
+
+    static int[] solve(int[][] A, int[] C, int m) {
+        int d = det(A, m), di = inv(d, m);
+        if (di == -1) return null;
+
+        int[][] adj = adj(A, m);
+        int[] x = new int[3];
+
+        for (int i=0;i<3;i++) {
+            for (int j=0;j<3;j++)
+                x[i] = (x[i] + adj[i][j]*C[j]) % m;
+            x[i] = (x[i] * di) % m;
+        }
+        return x;
+    }
+
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        int[][] A = new int[3][3];
+        int[] C = new int[3];
+
+        System.out.print("Mod: ");
+        int m = s.nextInt();
+
+        System.out.println("Matrix:");
+        for (int i=0;i<3;i++)
+            for (int j=0;j<3;j++)
+                A[i][j] = s.nextInt() % m;
+
+        System.out.println("Constants:");
+        for (int i=0;i<3;i++)
+            C[i] = s.nextInt() % m;
+
+        int[] x = solve(A, C, m);
+
+        if (x == null) System.out.println("No solution");
+        else
+            for (int i=0;i<3;i++)
+                System.out.println("x"+(i+1)+" = "+x[i]);
+    }
+}
