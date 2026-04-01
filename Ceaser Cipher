@@ -1,0 +1,38 @@
+import java.util.*;
+
+public class abc {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter text: ");
+        String text = sc.nextLine();
+        System.out.print("Enter key: ");    
+        int key = sc.nextInt();
+
+        String enc = "", dec = "";
+
+        // Encryption
+        for (char ch : text.toCharArray()) {
+            if (ch >= 'a' && ch <= 'z')
+                enc += (char)((ch - 'a' + key) % 26 + 'a');
+            else if (ch >= 'A' && ch <= 'Z')
+                enc += (char)((ch - 'A' + key) % 26 + 'A');
+            else
+                enc += ch;
+        }
+
+        // Decryption
+        for (char ch : enc.toCharArray()) {
+            if (ch >= 'a' && ch <= 'z')
+                dec += (char)((ch - 'a' - key + 26) % 26 + 'a');
+            else if (ch >= 'A' && ch <= 'Z')
+                dec += (char)((ch - 'A' - key + 26) % 26 + 'A');
+            else
+                dec += ch;
+        }
+
+        System.out.println("Encrypted: " + enc);
+        System.out.println("Decrypted: " + dec);
+
+        sc.close();
+    }
+}
