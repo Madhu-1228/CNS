@@ -1,0 +1,64 @@
+import java.util.*;
+
+public class LCE {
+
+    // Extended Euclidean Algorithm
+    static int gcd(int a, int b, int[] st) {
+        int r1 = a, r2 = b;
+        int s1 = 1, s2 = 0;
+        int t1 = 0, t2 = 1;
+
+        while (r2 > 0) {
+            int q = r1 / r2;
+
+            int r = r1 - q * r2;
+            r1 = r2;
+            r2 = r;
+
+            int s = s1 - q * s2;
+            s1 = s2;
+            s2 = s;
+
+            int t = t1 - q * t2;
+            t1 = t2;
+            t2 = t;
+        }
+
+        st[0] = s1; // s
+        st[1] = t1; // t
+        return r1;  // gcd
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter a: ");
+        int a = sc.nextInt();
+
+        System.out.print("Enter b: ");
+        int b = sc.nextInt();
+
+        System.out.print("Enter n: ");
+        int n = sc.nextInt();
+
+        int[] st = new int[2];
+        int g = gcd(a, n, st);
+
+        // Check if solution exists
+        if (b % g != 0) {
+            System.out.println("No solution exists");
+            return;
+        }
+
+        // Particular solution
+        int x0 = (st[0] * (b / g)) % n;
+        if (x0 < 0) x0 += n;
+
+        // Output
+        System.out.println("\nGCD(" + a + ", " + n + ") = " + g);
+        System.out.println("Particular Solution (x0) = " + x0);
+        System.out.println("General Solution: x = " + x0 + " + " + (n / g) + "t");
+
+        sc.close();
+    }
+}
