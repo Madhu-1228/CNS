@@ -1,0 +1,51 @@
+import java.util.*;
+
+public class LDS {
+    static int gcd(int a, int b, int[] st) {
+        int r1 = a, r2 = b, s1 = 1, s2 = 0, t1 = 0, t2 = 1;
+
+        while (r2 != 0) {
+            int q = r1 / r2;
+
+            int r = r1 - q * r2;
+            r1 = r2;
+            r2 = r;
+
+            int s = s1 - q * s2;
+            s1 = s2;
+            s2 = s;
+
+            int t = t1 - q * t2;
+            t1 = t2;
+            t2 = t;
+        }
+
+        st[0] = s1;
+        st[1] = t1;
+        return r1;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter a, b, c: ");
+        int a = sc.nextInt(), b = sc.nextInt(), c = sc.nextInt();
+
+        int[] st = new int[2];
+        int g = gcd(a, b, st);
+
+        if (c % g != 0) {
+            System.out.println("No solution");
+            return;
+        }
+
+        int x0 = st[0] * (c / g);
+        int y0 = st[1] * (c / g);
+
+        System.out.println("Particular: x=" + x0 + ", y=" + y0);
+        System.out.println("General: x=" + x0 + "+" + (b/g) + "t");
+        System.out.println("         y=" + y0 + "-" + (a/g) + "t");
+
+        sc.close();
+    }
+}
